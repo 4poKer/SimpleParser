@@ -20,6 +20,7 @@ namespace HabrParser
 
             if (isArticleId && articleId != 1)
             {
+
                 HabrController.ShowHabrArticle(HabrController.GetArticleById(articleId));
             }
             else

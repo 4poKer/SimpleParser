@@ -13,7 +13,10 @@ namespace HabrParser
         // Имя будущей базы данных можно указать через
         // вызов конструктора базового класса
         public HabrContext() : base("HabrHabr")
-        { }
+        {
+            //this.Configuration.LazyLoadingEnabled = false;
+            
+        }
 
         // Отражение таблиц базы данных на свойства с типом DbSet
         public DbSet<HabrAutor> HabrAutors { get; set; }

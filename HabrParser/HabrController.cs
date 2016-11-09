@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using HtmlAgilityPack;
 
@@ -10,16 +11,25 @@ namespace HabrParser
         public static HabrArticle GetArticleById(int articleId)
         {
 
-            var habrContext = new HabrContext();
+           var habrContext = new HabrContext();
 
-            return habrContext.HabrArticles.FirstOrDefault(a => a.HabrArticleId == articleId) 
+           return habrContext.HabrArticles.FirstOrDefault(a => a.HabrArticleId == articleId) 
                    ?? GetHabrArticleByIdFromInternet(articleId);
 
-            /*using (var habrContext = new HabrContext())
+
+            /*HabrArticle habrArticle;
+
+            using (var habrContext = new HabrContext())
             {
-                return habrContext.HabrArticles.FirstOrDefault(a => a.HabrArticleId == articleId)
-                       ?? GetHabrArticleByIdFromInternet(articleId);
-            }*/
+
+               habrArticle = habrContext.HabrArticles.FirstOrDefault(a => a.HabrArticleId == articleId);
+             
+            }
+
+            return habrArticle
+                     ?? GetHabrArticleByIdFromInternet(articleId);*/
+
+
         }
 
         public static List<HabrArticle> GetArticlesByAutorNickName(string nickName)
@@ -28,11 +38,15 @@ namespace HabrParser
 
             return  habrContext.HabrArticles.Where(a => a.HabrAutor.NickName == nickName).ToList();
 
-            /*using (var habrContext = new HabrContext())
-            {
+            /*List<HabrArticle> habrArticles = new List<HabrArticle>();
 
-                return habrContext.HabrArticles.Where(a => a.HabrAutor.NickName == nickName).ToList();
-            }*/
+            using (var habrContext = new HabrContext())
+            {
+                 habrArticles = habrContext.HabrArticles.Where(a => a.HabrAutor.NickName == nickName).ToList();
+                
+            }
+
+            return habrArticles;*/
         }
 
         public static HabrArticle GetHabrArticleByIdFromInternet(int articleId)
@@ -81,16 +95,16 @@ namespace HabrParser
                 };
 
                 //добавление в БД
-                var habrContext = new HabrContext();
+                /*var habrContext = new HabrContext();
                 habrContext.HabrArticles.Add(habrArticle);
-                habrContext.SaveChanges();
+                habrContext.SaveChanges();*/
                 //
 
-                /*using (var habrContext = new HabrContext())
+                using (var habrContext = new HabrContext())
                 {
                     habrContext.HabrArticles.Add(habrArticle);
                     habrContext.SaveChanges();
-                }*/
+                }
 
                 return habrArticle;
 
@@ -107,11 +121,20 @@ namespace HabrParser
 
         public static HabrAutor GetHabrAutorByNickName(string autorNickName)
         {
+            //HabrAutor habrAutor;
+
             using (var habrContext = new HabrContext())
             {
+
                 return habrContext.HabrAutors.FirstOrDefault(a => a.NickName == autorNickName)
-                       ?? GetHabrAutorByNickNameFromInternet(autorNickName);
+                     ?? GetHabrAutorByNickNameFromInternet(autorNickName);
+
+                //habrAutor = habrContext.HabrAutors.FirstOrDefault(a => a.NickName == autorNickName);
+
             }
+
+            /*return habrAutor
+                       ?? GetHabrAutorByNickNameFromInternet(autorNickName);*/
 
         }
 
